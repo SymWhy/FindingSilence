@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finding Silence</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--point me to the file you want to play-->
+    <audio src="sprite.mp3"></audio>
+    <div class="container">
+        <!--create a button to play the file-->
+        <button class="paused">Play</button>
+        <br>
+        <!--create a slider to control the volume-->
+        <label for="volume">Volume:</label>
+        <input type="range" min="0" max="1" step="0.01" value="0.50" class="volume">
+    </div>
+    <script src="silence.js">
+    </script>
+
+</body>
+
+</html>
