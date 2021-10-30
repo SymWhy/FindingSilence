@@ -17,35 +17,32 @@ const audioSource = audioCtx.createMediaElementSource(audioElement);
 let isPlaying = false;
 
 //if the button is clicked, pause or play
-playBtn.addEventListener('click', function () {
+playBtn.addEventListener('click', () => {
     //if the audio is paused, play it
     if (this.getAttribute('class') === 'paused') {
         audioElement.play();
         this.setAttribute('class', 'playing');
         this.textContent = 'Pause';
-        isPlaying = true;
     }
     //if the audio is playing, pause it
     else if (this.getAttribute('class') === 'playing') {
         audioElement.pause();
         this.setAttribute('class', 'paused');
         this.textContent = 'Play';
-        isPlaying = false;
     }
 });
 
 //reset audio to beginning
-audioElement.addEventListener('ended', function () {
+audioElement.addEventListener('ended', () => {
     playBtn.setAttribute('class', 'paused');
     playBtn.textContent = 'Play';
-    isPlaying = false;
 });
 
 //gain node (volume)
 const gainNode = audioCtx.createGain();
 
 //listen for slider value change
-volSlider.addEventListener('input', function () {
+volSlider.addEventListener('input', () => {
     gainNode.gain.value = this.value;
 });
 
@@ -59,7 +56,7 @@ function looper() {
     if (isPlaying){
         requestAnimationFrame(looper);
         analyzer.getByteFrequencyData(data);
-        data.forEach((val, i)=> {
+        data.forEach((val, i) => {
             dataArray.push(val);
         });
     }
@@ -67,5 +64,10 @@ function looper() {
 
 audioElement.onplay = () => {
     audioCtx.resume();
+    isPlaying = true;
     looper();
+}
+
+audioElement.onended = () => {
+    isPlaying = false;
 }
