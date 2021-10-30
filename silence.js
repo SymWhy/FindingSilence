@@ -53,10 +53,16 @@ audioSource.connect(gainNode).connect(audioCtx.destination);
 audioSource.connect(analyzer);
 
 let data = new Uint8Array(analyzer.frequencyBinCount);
+let dataArray = [];
 
 function looper() {
-    requestAnimationFrame(looper);
-    analyzer.getByteFrequencyData;
+    if (isPlaying){
+        requestAnimationFrame(looper);
+        analyzer.getByteFrequencyData(data);
+        data.forEach((val, i)=> {
+            dataArray.push(val);
+        });
+    }
 }
 
 audioElement.onplay = () => {
