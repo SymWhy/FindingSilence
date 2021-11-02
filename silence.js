@@ -17,7 +17,7 @@ const audioSource = audioCtx.createMediaElementSource(audioElement);
 let isPlaying = false;
 
 //if the button is clicked, pause or play
-playBtn.addEventListener('click', () => {
+playBtn.addEventListener('click', function() {
     //if the audio is paused, play it
     if (this.getAttribute('class') === 'paused') {
         audioElement.play();
@@ -33,7 +33,7 @@ playBtn.addEventListener('click', () => {
 });
 
 //reset audio to beginning
-audioElement.addEventListener('ended', () => {
+audioElement.addEventListener('ended', function() {
     playBtn.setAttribute('class', 'paused');
     playBtn.textContent = 'Play';
 });
@@ -42,7 +42,7 @@ audioElement.addEventListener('ended', () => {
 const gainNode = audioCtx.createGain();
 
 //listen for slider value change
-volSlider.addEventListener('input', () => {
+volSlider.addEventListener('input', function() {
     gainNode.gain.value = this.value;
 });
 
