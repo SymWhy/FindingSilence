@@ -62,6 +62,24 @@ function looper() {
     }
 }
 
+function findSilence() {
+    //create an empty array to hold averages
+    let avgs = [];
+    //create a series of arrays size 1024
+    dataArray.forEach((val, i) => {
+        let prev = 0; //previous slice end
+        //dynamicVariableName = array + n
+        if (i % 1024 === 0) {
+            let mySlice = dataArray.slice(prev, i);
+            //find the average across given slice
+            let myAvg = 0; //placeholder
+            avgs.push(myAvg); //pushing as arrays for some reason
+            prev = i;
+        }
+    });
+    console.log(avgs);
+}
+
 audioElement.onplay = () => {
     audioCtx.resume();
     isPlaying = true;
