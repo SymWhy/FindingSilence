@@ -50,22 +50,23 @@ audioSource.connect(gainNode).connect(audioCtx.destination);
 audioSource.connect(analyzer);
 
 let data = new Uint8Array(analyzer.frequencyBinCount);
-let avgs = [];
+let dataSet = [];
+let myTime = 0;
 
 function looper() {
     if (isPlaying){
         requestAnimationFrame(looper);
         analyzer.getByteFrequencyData(data);
         let mySlice = [];
-        let myTime = 0;
         data.forEach((val, i) => {
             mySlice.push(val);
             if (i % 1024 === 0) {
                 let mySum = mySlice.reduce((a,b) => a + b);
                 let myAvg = mySum / 1024;
-                avgs.push([myAvg, myTime]);
+                dataSet.push([myAvg, myTime]);
                 mySlice = []; //empty mySlice for reuse
-                myTime = 0; //placeholder
+                myTime = audioElement.currentTime;
+                //console.log(myTime);
             }
         });
     }
@@ -79,4 +80,5 @@ audioElement.onplay = () => {
 
 audioElement.onended = () => {
     isPlaying = false;
+    myTime = 0;
 }
