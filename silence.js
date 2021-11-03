@@ -50,34 +50,25 @@ audioSource.connect(gainNode).connect(audioCtx.destination);
 audioSource.connect(analyzer);
 
 let data = new Uint8Array(analyzer.frequencyBinCount);
-let dataArray = [];
+let avgs = [];
 
 function looper() {
     if (isPlaying){
         requestAnimationFrame(looper);
         analyzer.getByteFrequencyData(data);
+        let mySlice = [];
+        let myTime = 0;
         data.forEach((val, i) => {
-            dataArray.push(val);
+            mySlice.push(val);
+            if (i % 1024 === 0) {
+                let mySum = mySlice.reduce((a,b) => a + b);
+                let myAvg = mySum / 1024;
+                avgs.push([myAvg, myTime]);
+                mySlice = []; //empty mySlice for reuse
+                myTime = 0; //placeholder
+            }
         });
     }
-}
-
-function findSilence() {
-    //create an empty array to hold averages
-    let avgs = [];
-    //create a series of arrays size 1024
-    dataArray.forEach((val, i) => {
-        let prev = 0; //previous slice end
-        //dynamicVariableName = array + n
-        if (i % 1024 === 0) {
-            let mySlice = dataArray.slice(prev, i);
-            //find the average across given slice
-            let myAvg = 0; //placeholder
-            avgs.push(myAvg); //pushing as arrays for some reason
-            prev = i;
-        }
-    });
-    console.log(avgs);
 }
 
 audioElement.onplay = () => {
