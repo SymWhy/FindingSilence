@@ -72,6 +72,13 @@ function looper() {
     }
 }
 
+function findSilence() {
+    //look for chunks of 0s in dataSet
+    //if prev > 0, prev time is stop time
+    //if prev == 0, current time is start time
+    //return array of [start time, stop time]
+}
+
 audioElement.onplay = () => {
     audioCtx.resume();
     isPlaying = true;
