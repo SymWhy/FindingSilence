@@ -82,6 +82,7 @@ function findSilence() {
 audioElement.onplay = () => {
     audioCtx.resume();
     isPlaying = true;
+    dataSet = [];
     looper();
 }
 
