@@ -74,8 +74,13 @@ function looper() {
 
 function findSilence() {
     //look for chunks of 0s in dataSet
-    //if prev > 0, prev time is stop time
-    //if prev == 0, current time is start time
+    let prevAvg = 0;
+    let prevTime = 0;
+    dataSet.forEach((val, i) => {
+        let myAvg = val.slice(0,1);
+        let myTime = val.slice(1);
+        console.log(myAvg, ', ', myTime);
+        //if prev == 0, current time is start time
     //return array of [start time, stop time]
 }
 
