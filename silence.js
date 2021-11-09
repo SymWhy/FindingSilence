@@ -72,6 +72,8 @@ function looper() {
     }
 }
 
+let silence = [];
+
 function findSilence() {
     //look for chunks of 0s in dataSet
     let prevAvg = 0;
@@ -79,9 +81,16 @@ function findSilence() {
     dataSet.forEach((val, i) => {
         let myAvg = val.slice(0,1);
         let myTime = val.slice(1);
-        console.log(myAvg, ', ', myTime);
+        console.log(myAvg, ', ', myTime); //debug
+        if (myAvg === 0) {
+            silence.push(myTime);
+            console.log(myTime); //debug
+        }
         //if prev == 0, current time is start time
-    //return array of [start time, stop time]
+        //if prev > 0, prev time is stop time
+        //return array of [start time, stop time]
+    });
+    console.log(silence); //debug
 }
 
 audioElement.onplay = () => {
