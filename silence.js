@@ -7,7 +7,6 @@ const audioCtx = new AudioContext();
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
 const playBtn = document.querySelector('button');
-const volSlider = document.querySelector('.volume');
 
 const analyzer = audioCtx.createAnalyser();
 analyzer.fftSize = 2048;
@@ -38,15 +37,7 @@ audioElement.addEventListener('ended', function() {
     playBtn.textContent = 'Play';
 });
 
-//gain node (volume)
-const gainNode = audioCtx.createGain();
-
-//listen for slider value change
-volSlider.addEventListener('input', function() {
-    gainNode.gain.value = this.value;
-});
-
-audioSource.connect(gainNode).connect(audioCtx.destination);
+audioSource.connect(audioCtx.destination);
 audioSource.connect(analyzer);
 
 let data = new Uint8Array(analyzer.frequencyBinCount);
