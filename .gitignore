@@ -1,1 +1,2 @@
-findingsilence.code-workspace
+*.code-workspace
+.ignore/*
