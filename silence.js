@@ -2,7 +2,7 @@
 
 // Create an AudioContext
 const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
+const audioCtx = new AudioContext(); //default sample rate 48000
 
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
