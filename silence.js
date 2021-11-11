@@ -62,7 +62,7 @@ function looper() {
     }
 }
 
-let silence = [];
+let silenceSet = [];
 
 function findSilence() {
     //look for chunks of 0s in dataSet
@@ -73,14 +73,14 @@ function findSilence() {
         let myTime = val[1];
         //console.log(mySum, ', ', myTime); //debug
         if (mySum === 0) {
-            silence.push(i);
+            silenceSet.push(i);
             //console.log(myTime); //debug
         }
         //if prev == 0, current time is start time
         //if prev > 0, prev time is stop time
         //return array of [start time, stop time]
     });
-    console.log(silence); //debug
+    console.log(silenceSet); //debug
 }
 
 audioElement.onplay = () => {
