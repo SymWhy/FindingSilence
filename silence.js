@@ -55,15 +55,14 @@ let myTime = 0;
 
 function looper() {
     if (isPlaying){
-        requestAnimationFrame(looper);
+        requestAnimationFrame(looper); //60x a second
         analyzer.getByteFrequencyData(data);
         let mySlice = [];
         data.forEach((val, i) => {
             mySlice.push(val);
             if (i % 1024 === 0) {
                 let mySum = mySlice.reduce((a,b) => a + b);
-                let myAvg = mySum / 1024;
-                dataSet.push([myAvg, myTime]);
+                dataSet.push([mySum, myTime]);
                 mySlice = []; //empty mySlice for reuse
                 myTime = audioElement.currentTime;
                 //console.log(myTime);
@@ -76,15 +75,15 @@ let silence = [];
 
 function findSilence() {
     //look for chunks of 0s in dataSet
-    let prevAvg = 0;
+    let prevSum = 0;
     let prevTime = 0;
     dataSet.forEach((val, i) => {
-        let myAvg = val.slice(0,1);
-        let myTime = val.slice(1);
-        console.log(myAvg, ', ', myTime); //debug
-        if (myAvg === 0) {
-            silence.push(myTime);
-            console.log(myTime); //debug
+        let mySum = val[0];
+        let myTime = val[1];
+        //console.log(mySum, ', ', myTime); //debug
+        if (mySum === 0) {
+            silence.push(i);
+            //console.log(myTime); //debug
         }
         //if prev == 0, current time is start time
         //if prev > 0, prev time is stop time
