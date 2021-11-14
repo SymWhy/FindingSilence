@@ -7,6 +7,7 @@ const audioCtx = new AudioContext(); //default sample rate 48000
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
 const playBtn = document.querySelector('button');
+const detailBar = document.querySelector('range');
 
 const analyzer = audioCtx.createAnalyser();
 analyzer.fftSize = 2048;
@@ -14,6 +15,7 @@ analyzer.fftSize = 2048;
 const audioSource = audioCtx.createMediaElementSource(audioElement);
 
 let isPlaying = false;
+let detail = 0;
 
 //if the button is clicked, pause or play
 playBtn.addEventListener('click', function() {
@@ -29,6 +31,10 @@ playBtn.addEventListener('click', function() {
         this.setAttribute('class', 'paused');
         this.textContent = 'Play';
     }
+});
+
+detailBar.addEventListener('input', function() {
+    detail = this.value;
 });
 
 //reset audio to beginning
