@@ -33,9 +33,9 @@ playBtn.addEventListener('click', function() {
     }
 });
 
-detailBar.addEventListener('input', function() {
-    detail = this.value;
-});
+// detailBar.addEventListener('input', function() {
+//     detail = this.value;
+// });
 
 //reset audio to beginning
 audioElement.addEventListener('ended', function() {
@@ -49,23 +49,41 @@ audioSource.connect(analyzer);
 let data = new Uint8Array(analyzer.frequencyBinCount);
 let dataSet = [];
 let myTime = 0;
+let isSilence = false;
+let startTime = 0;
 
 function looper() {
     if (isPlaying){
-        requestAnimationFrame(looper); //60x a second
+        //requestAnimationFrame(looper); //60x a second
+        setTimeout(looper, 10);
         analyzer.getByteFrequencyData(data);
-        let mySlice = [];
-        data.forEach((val, i) => {
-            mySlice.push(val);
-            if (i % 1024 === 0) {
-                let mySum = mySlice.reduce((a,b) => a + b);
-                dataSet.push([mySum, myTime]);
-                mySlice = []; //empty mySlice for reuse
-                myTime = audioElement.currentTime;
-                //console.log(myTime);
+        let mySum = data.reduce((a,b) => a + b);
+        if (mySum < 6) {
+            if (!isSilence) {
+                startTime = myTime;
             }
-        });
+            isSilence = true;
+        }
+        else {
+            if (isSilence) {
+                console.log(startTime, myTime - startTime);
+            }
+            isSilence = false;
+        }
+        // let mySlice = [];
+        // data.forEach((val, i) => {
+        //     mySlice.push(val);
+        //     if (i % 1024 === 0) { //change to 6
+        //         let mySum = mySlice.reduce((a,b) => a + b);
+        //         dataSet.push([mySum, myTime]);
+        //         mySlice = []; //empty mySlice for reuse
+        //         //myTime = audioElement.currentTime;
+        //         //console.log(myTime);
+        //     }
+        // });
+        myTime ++;
     }
+
 }
 
 let silenceSet = [];
