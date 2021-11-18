@@ -2,17 +2,19 @@
 
 // Create an AudioContext
 const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext(); //default sample rate 48000
+const audioContext = new AudioContext(); //default sample rate 48000
+const offlineContext = new OfflineAudioContext();
 
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
 const playBtn = document.querySelector('button');
 const detailBar = document.querySelector('range');
 
-const analyzer = audioCtx.createAnalyser();
+const analyzer = audioContext.createAnalyser();
 analyzer.fftSize = 2048;
 
-const audioSource = audioCtx.createMediaElementSource(audioElement);
+const audioSource = audioContext.createMediaElementSource(audioElement);
+const offlineSource = offlineContext.createBufferSource(audioElement);
 
 let isPlaying = false;
 let detail = 0;
@@ -43,14 +45,14 @@ audioElement.addEventListener('ended', function() {
     playBtn.textContent = 'Play';
 });
 
-audioSource.connect(audioCtx.destination);
+audioSource.connect(audioContext.destination);
 audioSource.connect(analyzer);
 
 let data = new Uint8Array(analyzer.frequencyBinCount);
 let dataSet = [];
 let myTime = 0;
-let isSilence = false;
 let startTime = 0;
+let isSilence = false;
 
 function looper() {
     if (isPlaying){
@@ -124,7 +126,7 @@ function findSilence() {
 }
 
 audioElement.onplay = () => {
-    audioCtx.resume();
+    audioContext.resume();
     isPlaying = true;
     dataSet = [];
     looper();
