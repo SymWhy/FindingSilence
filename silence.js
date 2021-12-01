@@ -49,6 +49,7 @@ audioSource.connect(analyzer);
 
 let data = new Uint8Array(analyzer.frequencyBinCount);
 let dataSet = [];
+let soundSet = [];
 let myTime = 0;
 let startTime = 0;
 let isSilence = false;
@@ -60,17 +61,17 @@ function looper() {
         let mySum = data.reduce((a,b) => a + b); //sum all amplitudes in set data
         //if total amplitude is less than x
         if (mySum < 6) {
-            //if previous chunk was not silence, create a new start time
+            //if previous chunk was not silence, mark section as ended
             if (!isSilence) {
-                startTime = myTime;
+                soundSet.push(startTime, myTime);
             }
             isSilence = true;
         }
         else {
             //if previous chunk was silence or the audio has ended, 
-            //spit out (silence start time, end time, length)
+            //start a new sound section
             if (isSilence || audioElement.ended) {
-                console.log(startTime, myTime, myTime - startTime);
+                startTime = myTime;
             }
             isSilence = false;
         }
@@ -80,7 +81,6 @@ function looper() {
 }
 
 let silenceSet = [];
-let soundSet = [];
 
 function findSilence() {
     //look for chunks of 0s in dataSet
