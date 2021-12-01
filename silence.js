@@ -55,19 +55,22 @@ let isSilence = false;
 
 function looper() {
     if (isPlaying){
-        //requestAnimationFrame(looper); //60x a second
-        setTimeout(looper, 10);
+        setTimeout(looper, 10); //10ms delay
         analyzer.getByteFrequencyData(data);
-        let mySum = data.reduce((a,b) => a + b);
+        let mySum = data.reduce((a,b) => a + b); //sum all amplitudes in set data
+        //if total amplitude is less than x
         if (mySum < 6) {
+            //if previous chunk was not silence, create a new start time
             if (!isSilence) {
                 startTime = myTime;
             }
             isSilence = true;
         }
         else {
+            //if previous chunk was silence or the audio has ended, 
+            //spit out (silence start time, end time, length)
             if (isSilence || audioElement.ended) {
-                console.log(startTime, myTime - startTime);
+                console.log(startTime, myTime, myTime - startTime);
             }
             isSilence = false;
         }
