@@ -3,11 +3,6 @@
 // Create an AudioContext
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioContext = new AudioContext(); //default sample rate 48000
-const offlineContext = new OfflineAudioContext({
-    numberOfChannels: 2,
-    length: 44100 * 40,
-    sampleRate: 44100
-  });
 
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
@@ -18,28 +13,7 @@ const analyzer = audioContext.createAnalyser();
 analyzer.fftSize = 2048;
 
 const audioSource = audioContext.createMediaElementSource(audioElement);
-const offlineSource = offlineContext.createBufferSource(audioElement);
 
-function getData() {
-    request = new XMLHttpRequest();
-    request.open('GET', 'sprite.mp3', true);
-    request.responseType = 'arraybuffer';
-    request.onload = () => {
-        let audioData = request.response;
-
-        audioContext.decodeAudioData(audioData, (buffer) => {
-            myBuffer = buffer;
-            offlineSource.buffer = myBuffer;
-            offlineSource.connect(offlineContext.destination);
-            offlineSource.start();
-
-            offlineContext.startRendering();
-            offlineContext.oncomplete = (renderedBuffer) => {
-                console.log('Rendering completed successfully');
-            }
-        })
-    }
-}
 
 let isPlaying = false;
 let detail = 0;
