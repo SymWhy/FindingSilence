@@ -72,17 +72,6 @@ function looper() {
             }
             isSilence = false;
         }
-        // let mySlice = [];
-        // data.forEach((val, i) => {
-        //     mySlice.push(val);
-        //     if (i % 1024 === 0) { //change to 6
-        //         let mySum = mySlice.reduce((a,b) => a + b);
-        //         dataSet.push([mySum, myTime]);
-        //         mySlice = []; //empty mySlice for reuse
-        //         //myTime = audioElement.currentTime;
-        //         //console.log(myTime);
-        //     }
-        // });
         myTime ++;
     }
 
