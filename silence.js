@@ -79,42 +79,6 @@ function looper() {
 
 }
 
-let silenceSet = [];
-
-function findSilence() {
-    //look for chunks of 0s in dataSet
-    let silence = false;
-    let prevSum = 0;
-    let prevTime = -1;
-    let myTime = 0;
-    //if myTime - 1 === prevTime, add 
-    dataSet.forEach((val, i) => {
-        let mySum = val[0];
-        //let myTime = val[1];
-        //console.log(mySum, ', ', myTime); //debug
-        if (mySum < 1) {
-            silence = true;
-            silenceSet.push(i);
-            //console.log(myTime); //debug
-        }
-        //if prev == 0, current time is start time
-        //if prev > 0, prev time is stop time
-        //return array of [start time, stop time]
-    });
-    console.log(silenceSet); //debug
-    silenceSet.forEach((val, i) => {
-        myTime = val[i];
-        //if there's a jump...
-        if (myTime - prevTime > 1) {
-            soundSet.push[prevTime, myTime];
-            console.log(prevTime); //debug
-        }
-        prevTime = myTime;
-    }
-    );
-    console.log(soundSet); //debug
-}
-
 audioElement.onplay = () => {
     audioContext.resume();
     isPlaying = true;
