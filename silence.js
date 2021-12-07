@@ -50,20 +50,20 @@ audioSource.connect(analyzer);
 let data = new Uint8Array(analyzer.frequencyBinCount);
 let dataSet = [];
 let soundSet = [];
-let myTime = 0;
 let startTime = 0;
-let isSilence = false;
+let isSilence = true;
+let t0 = 0;
 
 function looper() {
     if (isPlaying){
-        setTimeout(looper, 10); //10ms delay
+        setTimeout(looper);
         analyzer.getByteFrequencyData(data);
         let mySum = data.reduce((a,b) => a + b); //sum all amplitudes in set data
         //if total amplitude is less than x
-        if (mySum < 6) {
+        if (mySum < 10000) {
             //if previous chunk was not silence, mark section as ended
             if (!isSilence) {
-                soundSet.push(startTime, myTime);
+                soundSet.push([startTime, Date.now() - t0]);
             }
             isSilence = true;
         }
@@ -71,11 +71,10 @@ function looper() {
             //if previous chunk was silence or the audio has ended, 
             //start a new sound section
             if (isSilence || audioElement.ended) {
-                startTime = myTime;
+                startTime = Date.now() - t0;
             }
             isSilence = false;
         }
-        myTime ++;
     }
 
 }
@@ -120,6 +119,7 @@ audioElement.onplay = () => {
     audioContext.resume();
     isPlaying = true;
     dataSet = [];
+    t0 = Date.now();
     looper();
 }
 
