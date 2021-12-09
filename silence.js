@@ -6,7 +6,8 @@ const audioContext = new AudioContext(); //default sample rate 48000
 
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
-const playBtn = document.querySelector('button');
+const playBtn = document.getElementById('play-btn');
+const muteBtn = document.getElementById('mute-btn');
 const detailBar = document.querySelector('range');
 
 const analyzer = audioContext.createAnalyser();
@@ -31,6 +32,19 @@ playBtn.addEventListener('click', function() {
         audioElement.pause();
         this.setAttribute('class', 'paused');
         this.textContent = 'Play';
+    }
+});
+
+muteBtn.addEventListener('click', function() {
+    if (this.getAttribute('class') === 'unmuted') {
+        audioElement.volume = 0;
+        this.setAttribute('class', 'muted');
+        this.textContent = 'Unmute';
+    }
+    else if (this.getAttribute('class') === 'muted') {
+        audioElement.volume = 1;
+        this.setAttribute('class', 'unmuted');
+        this.textContent = 'Mute';
     }
 });
 
