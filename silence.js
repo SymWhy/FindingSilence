@@ -6,8 +6,11 @@ const audioContext = new AudioContext(); //default sample rate 48000
 
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
+
 const playBtn = document.getElementById('play-btn');
 const muteBtn = document.getElementById('mute-btn');
+
+const soundCount = document.getElementById('sound-count');
 
 const freqSlider = document.getElementById('freq-detail');
 const timeSlider = document.getElementById('time-detail');
@@ -59,10 +62,6 @@ muteBtn.addEventListener('click', function() {
     }
 });
 
-// detailBar.addEventListener('input', function() {
-//     detail = this.value;
-// });
-
 //reset audio to beginning
 audioElement.addEventListener('ended', function() {
     playBtn.setAttribute('class', 'paused');
@@ -75,6 +74,7 @@ audioSource.connect(analyzer);
 let data = new Uint8Array(analyzer.frequencyBinCount);
 let dataSet = [];
 let soundSet = [];
+let numSounds = 0;
 let startTime = 0;
 let isSilence = true;
 let t0 = 0;
@@ -108,6 +108,7 @@ audioElement.onplay = () => {
     audioContext.resume();
     isPlaying = true;
     dataSet = [];
+    numSounds = 0;
     t0 = Date.now();
     looper();
 }
@@ -115,4 +116,6 @@ audioElement.onplay = () => {
 audioElement.onended = () => {
     isPlaying = false;
     myTime = 0;
+    numSounds = soundSet.length;
+    soundCount.innerHTML = numSounds;
 }
