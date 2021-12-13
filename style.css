@@ -5,6 +5,15 @@ body {
     background-color: #c1c8e4;
   }
 
+  .counter {
+      background: #fff;
+      display: inline-block;
+      color: #374192;
+      margin: 5px;
+      padding: 10px;
+      border: #d8d8d8 2px groove;
+  }
+
   button {
     background: #5667e8;
     color: #fff;
