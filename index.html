@@ -25,8 +25,11 @@
         <button id="play-btn" class="paused">Play</button>
         <button id="mute-btn" class="unmuted">Mute</button>
         <br>
-        <label for="detail-range">Sensitivity: </label>
-        <input type="range" id="detail-range" minlength="0" maxlength="10" step="0.1">
+        <label for="freq-detail">Min Frequency: </label>
+        <input type="range" id="freq-detail" value="0" minlength="0" maxlength="255" step="1">
+        <br>
+        <label for="time-detail">Min Time: </label>
+        <input type="range" id="time-detail" value="0" minlength="0" maxlength="10" step="0.01">
     </div>
     <script src="silence.js">
     </script>

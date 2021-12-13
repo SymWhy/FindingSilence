@@ -8,7 +8,9 @@ const audioContext = new AudioContext(); //default sample rate 48000
 const audioElement = document.querySelector('audio');
 const playBtn = document.getElementById('play-btn');
 const muteBtn = document.getElementById('mute-btn');
-const detailBar = document.querySelector('range');
+
+const freqSlider = document.getElementById('freq-detail');
+const timeSlider = document.getElementById('time-detail');
 
 const analyzer = audioContext.createAnalyser();
 analyzer.fftSize = 2048;
@@ -17,7 +19,16 @@ const audioSource = audioContext.createMediaElementSource(audioElement);
 
 
 let isPlaying = false;
-let detail = 0;
+let detailFreq = 0;
+let detailTime = 0;
+
+freqSlider.addEventListener('input', function() {
+    detailFreq = this.value;
+});
+
+timeSlider.addEventListener('input', function() {
+    detailTime = this.value;
+});
 
 //if the button is clicked, pause or play
 playBtn.addEventListener('click', function() {
@@ -74,7 +85,7 @@ function looper() {
         analyzer.getByteFrequencyData(data);
         let mySum = data.reduce((a,b) => a + b); //sum all amplitudes in set data
         //if total amplitude is less than x
-        if (mySum < 10000) {
+        if (mySum <= detailFreq) {
             //if previous chunk was not silence, mark section as ended
             if (!isSilence) {
                 soundSet.push([startTime, Date.now() - t0]);
