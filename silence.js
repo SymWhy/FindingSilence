@@ -8,6 +8,7 @@ const audioContext = new AudioContext(); //default sample rate 48000
 const audioElement = document.querySelector('audio');
 
 const playBtn = document.getElementById('play-btn');
+const resetBtn = document.getElementById('reset-btn');
 const muteBtn = document.getElementById('mute-btn');
 
 const soundCount = document.getElementById('sound-count');
@@ -47,6 +48,15 @@ playBtn.addEventListener('click', function() {
         this.setAttribute('class', 'paused');
         this.textContent = 'Play';
     }
+});
+
+resetBtn.addEventListener('click', function() {
+    audioElement.pause();
+    audioElement.currentTime = 0;
+    playBtn.setAttribute('class', 'paused');
+    playBtn.textContent = 'Play';
+    isPlaying = false;
+    myTime = 0;
 });
 
 muteBtn.addEventListener('click', function() {
