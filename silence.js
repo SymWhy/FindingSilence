@@ -16,11 +16,17 @@ const soundCount = document.getElementById('sound-count');
 const freqSlider = document.getElementById('freq-detail');
 const timeSlider = document.getElementById('time-detail');
 
+const fileInput = document.getElementById('file-input');
+
 const analyzer = audioContext.createAnalyser();
 analyzer.fftSize = 2048;
 
 const audioSource = audioContext.createMediaElementSource(audioElement);
 
+fileInput.addEventListener('change', handleFiles, false);
+function handleFiles() {
+    audioElement.src = this.value;
+}
 
 let isPlaying = false;
 let detailFreq = 0;
