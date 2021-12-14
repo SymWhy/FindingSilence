@@ -26,16 +26,16 @@ let isPlaying = false;
 let detailFreq = 0;
 let detailTime = 0;
 
-freqSlider.addEventListener('input', function() {
+freqSlider.addEventListener('input', function () {
     detailFreq = this.value;
 });
 
-timeSlider.addEventListener('input', function() {
+timeSlider.addEventListener('input', function () {
     detailTime = this.value;
 });
 
 //if the button is clicked, pause or play
-playBtn.addEventListener('click', function() {
+playBtn.addEventListener('click', function () {
     //if the audio is paused, play it
     if (this.getAttribute('class') === 'paused') {
         audioElement.play();
@@ -50,7 +50,7 @@ playBtn.addEventListener('click', function() {
     }
 });
 
-resetBtn.addEventListener('click', function() {
+resetBtn.addEventListener('click', function () {
     audioElement.pause();
     audioElement.currentTime = 0;
     playBtn.setAttribute('class', 'paused');
@@ -59,7 +59,7 @@ resetBtn.addEventListener('click', function() {
     myTime = 0;
 });
 
-muteBtn.addEventListener('click', function() {
+/*muteBtn.addEventListener('click', function () {
     if (this.getAttribute('class') === 'unmuted') {
         audioElement.volume = 0;
         this.setAttribute('class', 'muted');
@@ -70,10 +70,10 @@ muteBtn.addEventListener('click', function() {
         this.setAttribute('class', 'unmuted');
         this.textContent = 'Mute';
     }
-});
+});*/
 
 //reset audio to beginning
-audioElement.addEventListener('ended', function() {
+audioElement.addEventListener('ended', function () {
     playBtn.setAttribute('class', 'paused');
     playBtn.textContent = 'Play';
 });
@@ -90,10 +90,10 @@ let isSilence = true;
 let t0 = 0;
 
 function looper() {
-    if (isPlaying){
+    if (isPlaying) {
         setTimeout(looper);
         analyzer.getByteFrequencyData(data);
-        let mySum = data.reduce((a,b) => a + b); //sum all amplitudes in set data
+        let mySum = data.reduce((a, b) => a + b); //sum all amplitudes in set data
         //if total amplitude is less than x
         if (mySum <= detailFreq) {
             //if previous chunk was not silence, mark section as ended
@@ -118,6 +118,7 @@ audioElement.onplay = () => {
     audioContext.resume();
     isPlaying = true;
     dataSet = [];
+    soundSet = [];
     numSounds = 0;
     t0 = Date.now();
     looper();
