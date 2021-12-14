@@ -52,11 +52,10 @@ playBtn.addEventListener('click', function () {
 
 resetBtn.addEventListener('click', function () {
     audioElement.pause();
-    audioElement.currentTime = 0;
+    audioElement.load();
     playBtn.setAttribute('class', 'paused');
     playBtn.textContent = 'Play';
     isPlaying = false;
-    myTime = 0;
 });
 
 /*muteBtn.addEventListener('click', function () {
