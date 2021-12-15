@@ -24,8 +24,11 @@ analyzer.fftSize = 2048;
 const audioSource = audioContext.createMediaElementSource(audioElement);
 
 fileInput.addEventListener('change', handleFiles, false);
-function handleFiles() {
-    audioElement.src = this.value;
+function handleFiles(event) {
+    let files = event.target.files;
+    $("#audio-src").attr('src', URL.createObjectURL(files[0]));
+    init();
+    audioElement.load();
 }
 
 let isPlaying = false;

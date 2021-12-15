@@ -11,7 +11,9 @@
 
 <body>
     <!--point me to the file you want to play-->
-    <audio src="sprite.mp3"></audio>
+    <audio>
+        <source src="sprite.mp3" id="audio-src">
+    </audio>
     <div class="container">
         <div id="display">
             <label for="sound-count">Sounds:</label>
@@ -38,8 +40,8 @@
         <input type="file" id="file-input" 
             value="" accept="audio/*">
     </div>
-    <script src="silence.js">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="silence.js"></script>
 
 </body>
 
