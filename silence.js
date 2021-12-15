@@ -122,9 +122,7 @@ function looper() {
 audioElement.onplay = () => {
     audioContext.resume();
     isPlaying = true;
-    dataSet = [];
-    soundSet = [];
-    numSounds = 0;
+    init();
     t0 = Date.now();
     looper();
 }
@@ -133,5 +131,12 @@ audioElement.onended = () => {
     isPlaying = false;
     myTime = 0;
     numSounds = soundSet.length;
+    soundCount.innerHTML = numSounds;
+}
+
+function init() {
+    dataSet = [];
+    soundSet = [];
+    numSounds = 0;
     soundCount.innerHTML = numSounds;
 }
