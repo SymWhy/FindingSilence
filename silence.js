@@ -32,8 +32,17 @@ function handleFiles(event) {
     audioElement.load();
 }
 
+let isPlayback = false;
+
 soundSelect.addEventListener('input', (e) => {
     console.log(e.target.value);
+    isPlayback = true;
+    //start at [0] milliseconds, pause at [1]
+    audioElement.currentTime = e.target.value[0];
+    audioElement.play();
+    if (audioElement.currentTime >= e.target.value[1]) {
+        audioElement.pause();
+    }
 });
 
 let isPlaying = false;
@@ -52,9 +61,10 @@ freqSlider.addEventListener('input', function () {
 playBtn.addEventListener('click', function () {
     //if the audio is paused, play it
     if (this.getAttribute('class') === 'paused') {
+        init();
+        playBtn.setAttribute('class', 'playing');
+        playBtn.textContent = 'Pause';
         audioElement.play();
-        this.setAttribute('class', 'playing');
-        this.textContent = 'Pause';
     }
     //if the audio is playing, pause it
     else if (this.getAttribute('class') === 'playing') {
@@ -132,7 +142,6 @@ function looper() {
 audioElement.onplay = () => {
     audioContext.resume();
     isPlaying = true;
-    init();
     t0 = Date.now();
     looper();
 }
@@ -140,12 +149,17 @@ audioElement.onplay = () => {
 audioElement.onended = () => {
     isPlaying = false;
     myTime = 0;
-    numSounds = soundSet.length;
-    soundCount.innerHTML = numSounds;
-    soundSet.forEach((value, i) => {
-        //append option to sound-select
-        soundSelect[i+1] = new Option('Sound ' + (i+1), value);
-    })
+    if (!isPlayback) {
+        numSounds = soundSet.length;
+        soundCount.innerHTML = numSounds;
+        soundSet.forEach((value, i) => {
+            //append option to sound-select
+            soundSelect[i + 1] = new Option('Sound ' + (i + 1), value);
+        })
+    }
+    else {
+        isPlayback = false;
+    }
 }
 
 function init() {
@@ -153,8 +167,9 @@ function init() {
     soundSet = [];
     numSounds = 0;
     soundCount.innerHTML = numSounds;
+    //clear dynamically added options
     while (soundSelect.options.length > 1) {
         soundSelect.remove(1);
     }
-
+    //console.log('I have called the init() function');
 }
