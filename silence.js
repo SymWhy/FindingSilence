@@ -32,6 +32,10 @@ function handleFiles(event) {
     audioElement.load();
 }
 
+soundSelect.addEventListener('input', (e) => {
+    console.log(e.target.value);
+});
+
 let isPlaying = false;
 let detailFreq = 0;
 let detailTime = 0;
@@ -140,7 +144,7 @@ audioElement.onended = () => {
     soundCount.innerHTML = numSounds;
     soundSet.forEach((value, i) => {
         //append option to sound-select
-        soundSelect[i] = new Option('Sound ' + (i+1), value);
+        soundSelect[i+1] = new Option('Sound ' + (i+1), value);
     })
 }
 
@@ -149,8 +153,8 @@ function init() {
     soundSet = [];
     numSounds = 0;
     soundCount.innerHTML = numSounds;
-    while (soundSelect.options.length > 0) {
-        soundSelect.remove(0);
+    while (soundSelect.options.length > 1) {
+        soundSelect.remove(1);
     }
 
 }
