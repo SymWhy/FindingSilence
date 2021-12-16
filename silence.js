@@ -14,7 +14,7 @@ const muteBtn = document.getElementById('mute-btn');
 const soundCount = document.getElementById('sound-count');
 
 const freqSlider = document.getElementById('freq-detail');
-const timeSlider = document.getElementById('time-detail');
+//const timeSlider = document.getElementById('time-detail');
 
 const fileInput = document.getElementById('file-input');
 
@@ -39,9 +39,9 @@ freqSlider.addEventListener('input', function () {
     detailFreq = this.value;
 });
 
-timeSlider.addEventListener('input', function () {
+/* timeSlider.addEventListener('input', function () {
     detailTime = this.value;
-});
+}); */
 
 //if the button is clicked, pause or play
 playBtn.addEventListener('click', function () {
