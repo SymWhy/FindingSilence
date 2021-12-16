@@ -17,6 +17,7 @@ const freqSlider = document.getElementById('freq-detail');
 //const timeSlider = document.getElementById('time-detail');
 
 const fileInput = document.getElementById('file-input');
+const soundSelect = document.getElementById('sound-select');
 
 const analyzer = audioContext.createAnalyser();
 analyzer.fftSize = 2048;
@@ -65,6 +66,7 @@ resetBtn.addEventListener('click', function () {
     playBtn.setAttribute('class', 'paused');
     playBtn.textContent = 'Play';
     isPlaying = false;
+    init();
 });
 
 /*muteBtn.addEventListener('click', function () {
@@ -92,6 +94,7 @@ audioSource.connect(analyzer);
 let data = new Uint8Array(analyzer.frequencyBinCount);
 let dataSet = [];
 let soundSet = [];
+let soundOpts = [];
 let numSounds = 0;
 let startTime = 0;
 let isSilence = true;
@@ -135,6 +138,10 @@ audioElement.onended = () => {
     myTime = 0;
     numSounds = soundSet.length;
     soundCount.innerHTML = numSounds;
+    soundSet.forEach((value, i) => {
+        //append option to sound-select
+        soundSelect[i] = new Option('Sound ' + (i+1), value);
+    })
 }
 
 function init() {
@@ -142,4 +149,8 @@ function init() {
     soundSet = [];
     numSounds = 0;
     soundCount.innerHTML = numSounds;
+    while (soundSelect.options.length > 0) {
+        soundSelect.remove(0);
+    }
+
 }
