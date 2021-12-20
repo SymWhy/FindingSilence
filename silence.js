@@ -37,12 +37,14 @@ let isPlayback = false;
 soundSelect.addEventListener('input', (e) => {
     console.log(e.target.value);
     isPlayback = true;
-    //start at [0] milliseconds, pause at [1]
-    audioElement.currentTime = e.target.value[0];
-    audioElement.play();
-    if (audioElement.currentTime >= e.target.value[1]) {
-        audioElement.pause();
-    }
+    //if (e != null) {
+        //start at [0] milliseconds, pause at [1]
+        audioElement.currentTime = e.target.value[0];
+        audioElement.play();
+        if (audioElement.currentTime >= e.target.value[1]) {
+            audioElement.pause();
+        }
+    //}
 });
 
 let isPlaying = false;
