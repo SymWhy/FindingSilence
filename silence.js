@@ -6,25 +6,67 @@ const audioContext = new AudioContext(); //default sample rate 48000
 
 //identify each HTML element you want to use
 const audioElement = document.querySelector('audio');
-const playBtn = document.querySelector('button');
-const detailBar = document.querySelector('range');
+
+const playBtn = document.getElementById('play-btn');
+const resetBtn = document.getElementById('reset-btn');
+const muteBtn = document.getElementById('mute-btn');
+
+const soundCount = document.getElementById('sound-count');
+
+const freqSlider = document.getElementById('freq-detail');
+//const timeSlider = document.getElementById('time-detail');
+
+const fileInput = document.getElementById('file-input');
+const soundSelect = document.getElementById('sound-select');
 
 const analyzer = audioContext.createAnalyser();
 analyzer.fftSize = 2048;
 
 const audioSource = audioContext.createMediaElementSource(audioElement);
 
+fileInput.addEventListener('change', handleFiles, false);
+function handleFiles(event) {
+    let files = event.target.files;
+    $("#audio-src").attr('src', URL.createObjectURL(files[0]));
+    init();
+    audioElement.load();
+}
+
+let isPlayback = false;
+
+soundSelect.addEventListener('input', (e) => {
+    console.log(e.target.value);
+    isPlayback = true;
+    //if (e != null) {
+        //start at [0] milliseconds, pause at [1]
+        audioElement.currentTime = e.target.value[0];
+        audioElement.play();
+        if (audioElement.currentTime >= e.target.value[1]) {
+            audioElement.pause();
+        }
+    //}
+});
 
 let isPlaying = false;
-let detail = 0;
+let detailFreq = 0;
+let detailTime = 0;
+
+freqSlider.addEventListener('input', function () {
+    detailFreq = this.value;
+});
+
+/* timeSlider.addEventListener('input', function () {
+    detailTime = this.value;
+}); */
 
 //if the button is clicked, pause or play
-playBtn.addEventListener('click', function() {
+playBtn.addEventListener('click', function () {
     //if the audio is paused, play it
     if (this.getAttribute('class') === 'paused') {
+        init();
+        playBtn.setAttribute('class', 'playing');
+        playBtn.textContent = 'Pause';
         audioElement.play();
-        this.setAttribute('class', 'playing');
-        this.textContent = 'Pause';
     }
     //if the audio is playing, pause it
     else if (this.getAttribute('class') === 'playing') {
@@ -34,12 +76,30 @@ playBtn.addEventListener('click', function() {
     }
 });
 
-// detailBar.addEventListener('input', function() {
-//     detail = this.value;
-// });
+resetBtn.addEventListener('click', function () {
+    audioElement.pause();
+    audioElement.load();
+    playBtn.setAttribute('class', 'paused');
+    playBtn.textContent = 'Play';
+    isPlaying = false;
+    init();
+});
+
+/*muteBtn.addEventListener('click', function () {
+    if (this.getAttribute('class') === 'unmuted') {
+        audioElement.volume = 0;
+        this.setAttribute('class', 'muted');
+        this.textContent = 'Unmute';
+    }
+    else if (this.getAttribute('class') === 'muted') {
+        audioElement.volume = 1;
+        this.setAttribute('class', 'unmuted');
+        this.textContent = 'Mute';
+    }
+});*/
 
 //reset audio to beginning
-audioElement.addEventListener('ended', function() {
+audioElement.addEventListener('ended', function () {
     playBtn.setAttribute('class', 'paused');
     playBtn.textContent = 'Play';
 });
@@ -50,17 +110,19 @@ audioSource.connect(analyzer);
 let data = new Uint8Array(analyzer.frequencyBinCount);
 let dataSet = [];
 let soundSet = [];
+let soundOpts = [];
+let numSounds = 0;
 let startTime = 0;
 let isSilence = true;
 let t0 = 0;
 
 function looper() {
-    if (isPlaying){
+    if (isPlaying) {
         setTimeout(looper);
         analyzer.getByteFrequencyData(data);
-        let mySum = data.reduce((a,b) => a + b); //sum all amplitudes in set data
+        let mySum = data.reduce((a, b) => a + b); //sum all amplitudes in set data
         //if total amplitude is less than x
-        if (mySum < 10000) {
+        if (mySum <= detailFreq) {
             //if previous chunk was not silence, mark section as ended
             if (!isSilence) {
                 soundSet.push([startTime, Date.now() - t0]);
@@ -82,7 +144,6 @@ function looper() {
 audioElement.onplay = () => {
     audioContext.resume();
     isPlaying = true;
-    dataSet = [];
     t0 = Date.now();
     looper();
 }
@@ -90,4 +151,27 @@ audioElement.onplay = () => {
 audioElement.onended = () => {
     isPlaying = false;
     myTime = 0;
+    if (!isPlayback) {
+        numSounds = soundSet.length;
+        soundCount.innerHTML = numSounds;
+        soundSet.forEach((value, i) => {
+            //append option to sound-select
+            soundSelect[i + 1] = new Option('Sound ' + (i + 1), value);
+        })
+    }
+    else {
+        isPlayback = false;
+    }
+}
+
+function init() {
+    dataSet = [];
+    soundSet = [];
+    numSounds = 0;
+    soundCount.innerHTML = numSounds;
+    //clear dynamically added options
+    while (soundSelect.options.length > 1) {
+        soundSelect.remove(1);
+    }
+    //console.log('I have called the init() function');
 }

@@ -11,16 +11,43 @@
 
 <body>
     <!--point me to the file you want to play-->
-    <audio src="sprite.mp3"></audio>
+    <audio>
+        <source src="sample.wav" id="audio-src">
+    </audio>
     <div class="container">
-        <!--create a button to play the file-->
-        <button class="paused">Play</button>
+        <div id="display">
+            <label for="sound-count">Sounds:</label>
+            <!--<label for="silence-count">Silence:</label>
+            <br>-->
+            <div id="sound-count" class="counter">0</div>
+            <!--<div id="silence-count" class="counter">0</div>-->
+        </div>
         <br>
-        <label for="detail-range">Sensitivity: </label>
-        <input type="range" id="detail-range" minlength="0" maxlength="10" step="0.1">
+        <!--create a button to play the file-->
+        <button id="play-btn" class="paused">Play</button>
+        <button id="reset-btn">Reset</button>
+        <!--<button id="mute-btn" class="unmuted">Mute</button>-->
+        <br>
+        <label for="freq-detail">Min Frequency: </label>
+        <input type="range" id="freq-detail" value="0" minlength="0" maxlength="255" step="1">
+        <br>
+        <!--        <label for="time-detail">Min Time: </label>
+        <input type="range" id="time-detail" 
+            value="0" minlength="0" maxlength="10" step="0.01">
+        <br> -->
+        <label for="file-input">Upload a sound:</label>
+        <input type="file" id="file-input" value="" accept="audio/*">
+
+        <form>
+            <label>Select sound chunk:</label>
+            <select id="sound-select">
+                <option value="null">Select one</option>
+            </select>
+        </form>
+
     </div>
-    <script src="silence.js">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="silence.js"></script>
 
 </body>
 
